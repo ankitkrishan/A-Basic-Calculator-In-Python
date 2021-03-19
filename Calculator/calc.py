@@ -1,7 +1,8 @@
 import tkinter
+mainWindowPadding = 8
 mainWindow = tkinter.Tk()
 mainWindow.title("Calculator")
-mainWindow.geometry("227x350")
+mainWindow.geometry("640x480")
 mainWindow["padx"] = 8
 mainWindow["bg"] = "red"
 text = tkinter.Text(mainWindow, height=4, width=25)
@@ -12,9 +13,12 @@ def buttonClick(num: str):
     if num == "C":
         text.delete(1.0, tkinter.END)
     elif num == "=":
-        result = eval(text.get(1.0, tkinter.END))
-        text.delete(1.0, tkinter.END)
-        text.insert(tkinter.END, result)
+        try:
+            result = eval(text.get(1.0, tkinter.END))
+            text.delete(1.0, tkinter.END)
+            text.insert(tkinter.END, result)
+        except SyntaxError:
+            pass
     else:
         text.insert(tkinter.END, num)
 l = ["C", "CE", "7", "8", "9", "+", "4", "5", "6", "-", "1", "2", "3", "*", "0", "=", "/"]
@@ -33,4 +37,7 @@ for i in range(2, len(l)):
     tkinter.Button(frame, text=l[i], height=2, width = 5, borderwidth=5, command=lambda i=i: buttonClick(l[i])).grid(row=r, column=c)
     c+=1
     count+=1
+mainWindow.update()
+mainWindow.minsize(frame.winfo_width() + mainWindowPadding + 8, text.winfo_height() + frame.winfo_height() + 9)
+mainWindow.maxsize(frame.winfo_width() + mainWindowPadding + 8, text.winfo_height() + frame.winfo_height() + 9)
 mainWindow.mainloop()
